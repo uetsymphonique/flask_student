@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Students – StudentMgmt{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Students <span class="badge bg-secondary">{{ students|length }}</span></h5>
+    <a href="{{ url_for('create') }}" class="btn btn-sm btn-light border">
+      <i class="bi bi-plus-lg me-1"></i> Add student
+    </a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>#</th><th>Name</th><th>Email</th><th>Course</th><th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ s[1] }}</td>
+          <td>{{ s[2] }}</td>
+          <td><span class="badge bg-info-subtle text-info">{{ s[3] }}</span></td>
+          <td class="text-end action-buttons">
+            <a href="{{ url_for('edit', id=s[0]) }}" class="btn btn-outline-primary btn-sm">Edit</a>
+            <form class="d-inline" action="{{ url_for('delete', id=s[0]) }}" method="post">
+              <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete this record?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        {% if students|length == 0 %}
+        <tr><td colspan="5" class="text-center py-4 text-muted">No students yet.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
